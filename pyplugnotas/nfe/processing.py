@@ -18,22 +18,29 @@ class SerializacaoJSON(object):
         emitente['cpfCnpj'] = cpfCnpj
         return emitente
 
-    def serializar_destinatario(self, ):
-        destinatario = {}
-        destinatarioEndereco = {}
-        destinatario['cpfCnpj'] = '08114280956'
-        destinatario[
-            'razaoSocial'] = 'NF-E EMITIDA EM AMBIENTE DE HOMOLOGACAO - SEM VALOR FISCAL'
-        destinatario['email'] = 'contato@tecnospeed.com.br'
-        destinatarioEndereco['logradouro'] = 'AVENIDA DUQUE DE CAXIAS'
-        destinatarioEndereco['numero'] = '882'
-        destinatarioEndereco['bairro'] = 'CENTRO'
-        destinatarioEndereco['codigoCidade'] = '4115200'
-        destinatarioEndereco['descricaoCidade'] = 'MARINGA'
-        destinatarioEndereco['estado'] = 'PR'
-        destinatarioEndereco['cep'] = '87020025'
-        destinatario['endereco'] = destinatarioEndereco
-        return destinatario
+    def serialize_recipient(
+        self,
+        cpfCnpj,
+        razaoSocial,
+    ):
+        recipient = {}
+        recipientAddress = {}
+        recipient['cpfCnpj'] = cpfCnpj
+        if self._ambiente == 1:
+            recipient['razaoSocial'] = razaoSocial
+        else:
+            recipient[
+                'razaoSocial'] = 'NF-E EMITIDA EM AMBIENTE DE HOMOLOGACAO - SEM VALOR FISCAL'
+        recipient['email'] = 'contato@tecnospeed.com.br'
+        recipientAddress['logradouro'] = 'AVENIDA DUQUE DE CAXIAS'
+        recipientAddress['numero'] = '882'
+        recipientAddress['bairro'] = 'CENTRO'
+        recipientAddress['codigoCidade'] = '4115200'
+        recipientAddress['descricaoCidade'] = 'MARINGA'
+        recipientAddress['estado'] = 'PR'
+        recipientAddress['cep'] = '87020025'
+        recipient['endereco'] = recipientAddress
+        return recipient
 
     def serializar_itens(self):
 
@@ -107,9 +114,10 @@ class SerializacaoJSON(object):
 
 
 data = {}
-instance = SerializacaoJSON()
+instance = SerializacaoJSON(homologacao=False)
 data['emitente'] = instance.serializar_emitente(cpfCnpj='08187168000160')
-data['destinatario'] = instance.serializar_destinatario()
+data['destinatario'] = instance.serialize_recipient(cpfCnpj='08114280956',
+                                                    razaoSocial='Teste')
 data['itens'] = instance.serializar_itens()
 data['pagamentos'] = instance.serializar_pagamentos()
 data['responsavelTecnico'] = instance.serializar_responsavelTecnico()
