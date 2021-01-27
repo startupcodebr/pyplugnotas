@@ -128,4 +128,12 @@ class SerializacaoJSON(object):
         data['responsavelTecnico'] = instance.serialize_responsible()
         json_data = json.dumps(data)
 
-        return json.dumps(data, indent=4, sort_keys=False)
+        return json_data
+
+    def post_nfe(self, apikey, payload):
+        url = "https://api.sandbox.plugnotas.com.br/nfe"
+        headers = {'x-api-key': apikey, 'Content-Type': 'application/json'}
+
+        response = requests.request("GET", url, headers=headers, data=payload)
+
+        print(response.text.encode('utf8'))

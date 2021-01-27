@@ -12,6 +12,7 @@ yapf = "*"
 pycodestyle = "*"
 pylint = "*"
 pydotplus = "*"
+jupyterlab = "*"
 
 [requires]
 python_version = "3.8"
