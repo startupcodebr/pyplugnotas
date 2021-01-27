@@ -13,10 +13,11 @@ class SerializacaoJSON(object):
     ):
         self._ambiente = homologacao and 2 or 1
 
-    def serializar_emitente(self, cpfCnpj):
-        emitente = {}
-        emitente['cpfCnpj'] = cpfCnpj
-        return emitente
+    def serialize_issuer(self, cpfCnpj):
+        issuer = {}
+        issuer['cpfCnpj'] = cpfCnpj
+
+        return issuer
 
     def serialize_recipient(
         self,
@@ -40,88 +41,91 @@ class SerializacaoJSON(object):
         recipientAddress['estado'] = 'PR'
         recipientAddress['cep'] = '87020025'
         recipient['endereco'] = recipientAddress
+
         return recipient
 
-    def serializar_itens(self):
+    def serializer_items(self):
 
-        itens = {}
-        itensValorUnitario = {}
-        itensTributos = {}
-        itensTributosIcms = {}
-        itensTributosIcmsBaseCalculo = {}
-        itensTributosPis = {}
-        itensTributosPisBaseCalculo = {}
-        itensTributosCofins = {}
-        itensTributosCofinsBaseCalculo = {}
+        items = {}
+        itemsValueUnit = {}
+        itemsTributes = {}
+        itemsTributesIcms = {}
+        itemsTributesIcmsBaseCalculation = {}
+        itemsTributesPis = {}
+        itemsTributesPisBaseCalculation = {}
+        itemsTributesCofins = {}
+        itemsTributesCofinsBaseCalculation = {}
 
-        itens['codigo'] = '1'
-        itens[
+        items['codigo'] = '1'
+        items[
             'descricao'] = 'NOTA FISCAL EMITIDA EM AMBIENTE DE HOMOLOGACAO - SEM VALOR FISCAL'
-        itens['ncm'] = '06029090'
-        itens['cest'] = '0123456'
-        itens['cfop'] = '5101'
-        itensValorUnitario['comercial'] = '4.6'
-        itensValorUnitario['tributavel'] = '4.6'
-        itens['valorUnitario'] = itensValorUnitario
-        itens['valor'] = '4.6'
+        items['ncm'] = '06029090'
+        items['cest'] = '0123456'
+        items['cfop'] = '5101'
+        itemsValueUnit['comercial'] = '4.6'
+        itemsValueUnit['tributavel'] = '4.6'
+        items['valorUnitario'] = itemsValueUnit
+        items['valor'] = '4.6'
 
-        itensTributosIcms['origem'] = '0'
-        itensTributosIcms['cst'] = '00'
-        itensTributosIcms['aliquota'] = '0'
-        itensTributosIcms['valor'] = '0'
-        itensTributosIcmsBaseCalculo['modalidadeDeterminacao'] = '0'
-        itensTributosIcmsBaseCalculo['valor'] = '0'
-        itensTributosIcms['baseCalculo'] = itensTributosIcmsBaseCalculo
+        itemsTributesIcms['origem'] = '0'
+        itemsTributesIcms['cst'] = '00'
+        itemsTributesIcms['aliquota'] = '0'
+        itemsTributesIcms['valor'] = '0'
+        itemsTributesIcmsBaseCalculation['modalidadeDeterminacao'] = '0'
+        itemsTributesIcmsBaseCalculation['valor'] = '0'
+        itemsTributesIcms['baseCalculo'] = itemsTributesIcmsBaseCalculation
 
-        itensTributosPis['cst'] = '00'
-        itensTributosPis['aliquota'] = '0'
-        itensTributosPis['valor'] = '0'
-        itensTributosPisBaseCalculo['valor'] = '0'
-        itensTributosPisBaseCalculo['quantidade'] = '0'
-        itensTributosPis['baseCalculo'] = itensTributosPisBaseCalculo
+        itemsTributesPis['cst'] = '00'
+        itemsTributesPis['aliquota'] = '0'
+        itemsTributesPis['valor'] = '0'
+        itemsTributesPisBaseCalculation['valor'] = '0'
+        itemsTributesPisBaseCalculation['quantidade'] = '0'
+        itemsTributesPis['baseCalculo'] = itemsTributesPisBaseCalculation
+        itemsTributesCofins['cst'] = '07'
+        itemsTributesCofins['aliquota'] = '0'
+        itemsTributesCofins['valor'] = '0'
+        itemsTributesCofinsBaseCalculation['valor'] = '0'
+        itemsTributesCofins['baseCalculo'] = itemsTributesCofinsBaseCalculation
 
-        itensTributosCofins['cst'] = '07'
-        itensTributosCofins['aliquota'] = '0'
-        itensTributosCofins['valor'] = '0'
-        itensTributosCofinsBaseCalculo['valor'] = '0'
-        itensTributosCofins['baseCalculo'] = itensTributosCofinsBaseCalculo
+        itemsTributes['icms'] = itemsTributesIcms
+        itemsTributes['pis'] = itemsTributesPis
+        itemsTributes['cofins'] = itemsTributesCofins
 
-        itensTributos['icms'] = itensTributosIcms
-        itensTributos['pis'] = itensTributosPis
-        itensTributos['cofins'] = itensTributosCofins
+        items['tributos'] = itemsTributes
 
-        itens['tributos'] = itensTributos
+        return items
 
-        return itens
+    def serialize_payments(self):
+        payments = {}
+        payments['aVista'] = 'true'
+        payments['meio'] = '01'
+        payments['valor'] = '4.6'
 
-    def serializar_pagamentos(self):
-        pagamentos = {}
-        pagamentos['aVista'] = 'true'
-        pagamentos['meio'] = '01'
-        pagamentos['valor'] = '4.6'
-        return pagamentos
+        return payments
 
-    def serializar_responsavelTecnico(self):
-        responsavelTecnico = {}
-        responsavelTecnicoTelefone = {}
-        responsavelTecnico['cpfCnpj'] = '68080571000117'
-        responsavelTecnico['nome'] = 'Tompast Tecnologia da Informação LTDA'
-        responsavelTecnico['email'] = 'suporte@startupcode.com.br'
-        responsavelTecnicoTelefone['ddd'] = '44'
-        responsavelTecnicoTelefone['numero'] = '30379500'
-        responsavelTecnico['telefone'] = responsavelTecnicoTelefone
-        return responsavelTecnico
+    def serialize_responsible(self):
+        responsibleTechnician = {}
+        responsibleTechnicianPhone = {}
+        responsibleTechnician['cpfCnpj'] = '68080571000117'
+        responsibleTechnician['nome'] = 'Tompast Tecnologia da Informação LTDA'
+        responsibleTechnician['email'] = 'suporte@startupcode.com.br'
+        responsibleTechnicianPhone['ddd'] = '44'
+        responsibleTechnicianPhone['numero'] = '30379500'
+        responsibleTechnician['telefone'] = responsibleTechnicianPhone
 
+        return responsibleTechnician
 
-data = {}
-instance = SerializacaoJSON(homologacao=False)
-data['emitente'] = instance.serializar_emitente(cpfCnpj='08187168000160')
-data['destinatario'] = instance.serialize_recipient(cpfCnpj='08114280956',
-                                                    razaoSocial='Teste')
-data['itens'] = instance.serializar_itens()
-data['pagamentos'] = instance.serializar_pagamentos()
-data['responsavelTecnico'] = instance.serializar_responsavelTecnico()
+    def json_data(self):
+        data = {}
+        instance = SerializacaoJSON(homologacao=False)
+        data['emitente'] = instance.serialize_issuer(cpfCnpj='08187168000160')
+        data['destinatario'] = instance.serialize_recipient(
+            cpfCnpj='08114280956',
+            razaoSocial='Teste',
+        )
+        data['itens'] = instance.serializer_items()
+        data['pagamentos'] = instance.serialize_payments()
+        data['responsavelTecnico'] = instance.serialize_responsible()
+        json_data = json.dumps(data)
 
-json_data = json.dumps(data)
-
-print(json.dumps(data, indent=4, sort_keys=False))
+        return json.dumps(data, indent=4, sort_keys=False)
